@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+<head>
+    <title>Blogger</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        .img-thumb {
+            margin-top: 25px;
+            width: 50px;
+            height: 50px;
+        }
+        .comment{
+            border-bottom: 1px dotted #d8d8d8;
+        }
+        .comment-field {
+            padding-top:10px;
+        }
+        .bck-to-profile{
+            display: inline-block;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-10"><h1><%=blogTitle%></h1></div>
+        <div class="col-xs-2">
+            <% if(user) {%>
+            <a class="bck-to-profile" href="/profile">&lt;-- back to profile</a>
+            <% } %>
+        </div>
+    </div>
+    <% if(blogPosts.length === 0){ %>
+    <h2>No posts yet</h2>
+    <% } else{ %>
+    <% for(var i=0; i<blogPosts.length; i++) {%>
+    <div class="row" data-id="<%= blogPosts[i].id%>">
+        <div class="col-xs-2">
+            <img src="<%= blogPosts[i].displayImage%>" class="img-thumb"/>
+        </div>
+        <div class="col-xs-10">
+            <h3><%=blogPosts[i].title%></h3>
+            <h6><i> Last Modified: <%= blogPosts[i].displayDate%> </i></h6>
+            <p><%=blogPosts[i].content%></p>
+        </div>
+        <% if(user) {%>
+
+        <%}%>
+        <% if(blogPosts[i].comments) {%>
+        <div class="col-xs-12">
+            <h4>Comments</h4>
+            <% for(var j=0; j<blogPosts[i].comments.length; j++) {%>
+            <div class="comment">
+               by <%= blogPosts[i].comments[j].username%> |
+                <%= blogPosts[i].comments[j].updated_at%> |
+                <%= blogPosts[i].comments[j].comment%>
+            </div>
+            <% } %>
+        </div>
+        <% } %>
+        <div class="col-xs-12 comment-field">
+            <form action="/comment/<%= blogPosts[i].id %>" method="post">
+                <div class="row">
+                    <input type="hidden" value="<%=blogTitle%>" name="blogTitle"/>
+                    <div class="col-xs-9">
+              <textarea class="form-control" placeholder="Add your comment here...."
+                        name="txtComment"></textarea>
+                    </div>
+                    <div class="col-xs-3">
+                        <button type="submit" class="btn btn-warning btn-lg" data-post-id="<%= blogPosts[i].id %>">
+                            <% if(user) {%>
+                            Post
+                            <%} else {%>
+                            Login &amp; Post
+                            <%}%>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <hr/>
+    <% } %>
+    <% } %>
+</div>
+</body>
+</html>

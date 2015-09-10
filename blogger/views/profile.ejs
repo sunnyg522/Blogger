@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+    <title>Blogger Profile</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <style>
+        body         { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-user"></span> Profile Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+        <a href="/post" class="btn btn-default btn-sm">Create New Post</a>
+    </div>
+
+    <% if (typeof message !== 'undefined' && message.length > 0) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+    <div class="row">
+
+
+
+
+        <% for(var i=0; i<posts.length; i++) {%>
+        <div class="col-xs-12 col-sm-8">
+            <p><strong>Title: </strong><%= posts[i].title%> </p>
+            <p><strong>Created:  </strong><%= posts[i].created_at%> </p>
+            <p><strong>Updated:  </strong><%= posts[i].updated_at%></p>
+            <% if(posts[i].comments && posts[i].comments.length>0) {%><p><strong>No of comments:  </strong><%= posts[i].commentsCount%></p><%}%>
+            <a href="/post/<%= posts[i].id %>" class="btn btn-default btn-sm">Edit</a>
+            <a href="/delete/<%= posts[i].id %>" class="btn btn-default btn-sm">Delete</a>
+            <% if(posts[i].comments && posts[i].comments.length>0) {%>
+            <div class="col-xs-12">
+                <h4>Comments</h4>
+                <% for(var j=0; j<posts[i].comments.length; j++) {%>
+                <div class="comment">
+                    by <%= posts[i].comments[j].username%> |
+                    <%= posts[i].comments[j].updated_at%> |
+                    <%= posts[i].comments[j].comment%>
+                </div>
+                <%}%>
+            </div>
+            <% } %>
+            <hr><hr>
+        </div>
+        <%}%>
+
+
+</div></div>
+</body>
+</html>
